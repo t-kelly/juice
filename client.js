@@ -269,6 +269,15 @@ function juiceDocument($, options) {
 
 function inlineContent(html, css, options) {
     var $ = utils.cheerio(html, { xmlMode: options && options.xmlMode});
+    var preservedText = utils.getPreservedText( css, {
+      mediaQueries: options.preserveMediaQueries,
+      fontFaces: options.preserveFontFaces
+    });
+
+    if ( preservedText ) {
+      $("head").append('<style>' + preservedText + '</style>');
+    }
+
     inlineDocument($, css, options);
 
     if (options && options.xmlMode){
